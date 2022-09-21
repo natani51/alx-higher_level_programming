@@ -4,118 +4,122 @@ Defines a Rectangle class.
 """
 
 
-class Rectangle:
-    """Rectangle class defined by width and height.
-    Attributes:
-        number_of_instances: number of Rectangle instances,
-        increments with every instantitation,
-        decrements with every deletion
+class Rectangle():
     """
-
+    This is a class defination called Rectangle.
+    """
     number_of_instances = 0
     print_symbol = '#'
 
     def __init__(self, width=0, height=0):
-        """Initializes a Rectangle instance.
-        Args:
-            width: width of the rectangle
-            height: height of the rectangle
-        """
         self.width = width
         self.height = height
         Rectangle.number_of_instances += 1
 
-    def __str__(self):
-        """Returns an informal and nicely printable string representation
-        of a Rectangle instance, filled with the '#' character."""
-        if self.__height == 0 or self.__width == 0:
-            return ''
-        rec_str = ''
-        for i in range(self.__height):
-            for j in range(self.__width):
-                rec_str += str(self.print_symbol)
-            rec_str += '\n'
-        return rec_str[:-1]
-
-    def __repr__(self):
-        """Return a string representation of a Rectangle instance
-        that is able to recreate a new instance by using eval()
-        """
-        return "Rectangle({}, {})".format(self.__width, self.__height)
-
-    def __del__(self):
-        """Deletes a Rectangle instance."""
-        print("Bye rectangle...")
-        Rectangle.number_of_instances -= 1
-
     @property
     def width(self):
-        """Retrieves the width of a Rectangle instance."""
+        """
+        This method retrives the value of attribute width.
+        """
         return self.__width
 
     @width.setter
     def width(self, value):
-        """Sets the width of a Rectangle instance
-        Args:
-            value: value of the width, must be a positive integer
         """
-        if not isinstance(value, int):
+        This method sets the value of the attribute height.
+        """
+        if isinstance(value, int):
+            if value < 0:
+                raise ValueError("width must be >= 0")
+            self.__width = value
+        else:
             raise TypeError("width must be an integer")
-        if value < 0:
-            raise ValueError("width must be >= 0")
-        self.__width = value
 
     @property
     def height(self):
-        """Retrieves the height of a Rectangle instance."""
+        """
+        This method retrives the value of attribute height.
+        """
         return self.__height
 
     @height.setter
     def height(self, value):
-        """Sets the height of a Rectangle instance
-        Args:
-            value: value of the height, must be a positive integer
         """
-        if not isinstance(value, int):
+        This method sets the value of the attribute height.
+        """
+        if isinstance(value, int):
+            if value < 0:
+                raise ValueError("height must be >= 0")
+            self.__height = value
+        else:
             raise TypeError("height must be an integer")
-        if value < 0:
-            raise ValueError("height must be >= 0")
-        self.__height = value
 
     def area(self):
-        """Calculates the area of a Rectangle instance
-        Returns:
-            Area of the the rectangle, given by height * width
+        """
+        This method computes the area of rectangle based on the
+        height and width value.
         """
         return self.__width * self.__height
 
     def perimeter(self):
-        """Calculates the perimeter of a Rectangle instance
-        Returns:
-            Perimeter of the rectangle, given by 2 * (height + width)
         """
-        if self.__height == 0 or self.__width == 0:
+        This method computes the permeter of rectangle based on
+        the height and width value.
+        """
+        if self.__width == 0 or self.__height == 0:
             return 0
         return 2 * (self.__width + self.__height)
 
+    def __str__(self):
+        """
+        Nicely printable string representation of an object of class
+        rectangle.
+        """
+        ret_val = ""
+        if (self.__height == 0 or self.__width == 0):
+            return ret_val
+        for i in range(self.__height):
+            [print('#', end="") for ch in range(self.__width)]
+            if i < self.__height - 1:
+                print("")
+        return ret_val
+
+    def __repr__(self):
+        """
+        An instance method that returns an official string representation
+        of an instance.
+        """
+        ret_val = f'Rectangle({self.__width}, {self.__height})'
+        return ret_val
+
+    def __del__(self):
+        """
+        An instance method that deletes an instance of the class Rectangle.
+        """
+        print("Bye rectangle...")
+        Rectangle.number_of_instances -= 1
+
     @staticmethod
     def bigger_or_equal(rect_1, rect_2):
-        """Finds the biggest Rectangle based on the area
-        Args:
-            rect_1: Rectangle instance
-            rect_2: Rectangle instance different from rect_1
-        Returns:
-            The instance with the biggest area,
-            or rect_1 if both rectangles have the same area
+        """
+        This static method compares two rectangle instnanses based on their
+        Area.
         """
         if not isinstance(rect_1, Rectangle):
             raise TypeError("rect_1 must be an instance of Rectangle")
         if not isinstance(rect_2, Rectangle):
             raise TypeError("rect_2 must be an instance of Rectangle")
-        if rect_1.area() == rect_2.area() or rect_1.area() > rect_2.area():
+        area1 = rect_1.area()
+        area2 = rect_2.area()
+
+        if area1 >= area2:
             return rect_1
-        if rect_1.area() < rect_2.area():
-            return rect_2
+        return rect_2
 
     @classmethod
     def square(cls, size=0):
+        """
+        This class method returns a new Rectangle instance with
+        width == height == size
+        """
+        return cls(size, size)
